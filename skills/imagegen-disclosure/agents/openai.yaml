@@ -1,0 +1,4 @@
+interface:
+  display_name: "Imagegen Disclosure"
+  short_description: "Apply disclosure-label rules to generated images."
+  default_prompt: "Use this skill when adding or validating AI-generation disclosure labels for generated images."

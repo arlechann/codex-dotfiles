@@ -15,10 +15,8 @@ if errorlevel 1 exit /b 1
 call :link_file "%SCRIPT_DIR%\AGENTS.md" "%CODEX_DIR%\AGENTS.md"
 if errorlevel 1 exit /b 1
 
-if exist "%SCRIPT_DIR%\skills\" (
-  call :link_dir "%SCRIPT_DIR%\skills" "%CODEX_DIR%\skills"
-  if errorlevel 1 exit /b 1
-)
+call :link_skills "%SCRIPT_DIR%\skills" "%CODEX_DIR%\skills"
+if errorlevel 1 exit /b 1
 
 echo Setup completed. 1>&2
 exit /b 0
@@ -55,6 +53,20 @@ if errorlevel 1 (
 )
 
 echo Linked %TARGET% -> %SOURCE% 1>&2
+exit /b 0
+
+:link_skills
+set "SOURCE_DIR=%~1"
+set "TARGET_DIR=%~2"
+
+if not exist "%SOURCE_DIR%\" exit /b 0
+if not exist "%TARGET_DIR%" mkdir "%TARGET_DIR%"
+
+for /d %%D in ("%SOURCE_DIR%\*") do (
+  call :link_dir "%%~fD" "%TARGET_DIR%\%%~nxD"
+  if errorlevel 1 exit /b 1
+)
+
 exit /b 0
 
 :link_dir
