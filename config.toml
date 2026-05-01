@@ -1,7 +1,7 @@
 model = "gpt-5.4"
 model_reasoning_effort = "medium"
 
-approval_level = "on-request" # "untrusted", "on-failure", "on-request", "never"
+approval_policy = "on-request" # "untrusted", "on-failure", "on-request", "never"
 
 web_search = "cached" # "cached", "disabled", "live"
 
@@ -10,4 +10,7 @@ inherit = "core" # "core", "all", "none"
 include_only = ["PATH", "HOME", "USER"]
 ignore_default_excludes = false # default excludes KEY, SECRET, and TOKEN environments
 exclude = ["AWS_*"]
+
+[tui]
+status_line = ["model-with-reasoning", "current-dir", "git-branch", "context-remaining", "five-hour-limit", "weekly-limit", "thread-title", "task-progress"]
 
