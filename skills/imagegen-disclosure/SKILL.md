@@ -9,10 +9,10 @@ description: Add and validate AI-generation disclosure labels for generated or e
 
 生成段階では画像をクリーンな状態に保つ。画像生成モデルに、署名、ウォーターマーク、キャプション、開示ラベルを描画させないこと。
 
-生成または編集されたビットマップ画像をローカルファイルとして扱える状態になった後で、ImageMagick を使って次の開示ラベルを合成する。
+生成または編集されたビットマップ画像をローカルファイルとして扱える状態になった後で、ImageMagick を使って開示ラベルを合成する。ラベル中のモデル名には、この SKILL を実行しているモデルの名前をそのまま使うこと。
 
 ```text
-この画像はChatGPTにより生成されました
+この画像は<実行モデル名>により生成されました
 ```
 
 ローカルファイルとして処理できない場合、または ImageMagick を利用できない場合は、画像生成プロンプトでラベルを再現しようとせず、後処理できない理由を説明する。
@@ -20,12 +20,13 @@ description: Add and validate AI-generation disclosure labels for generated or e
 ## 手順
 
 1. 画像外部的なメタ情報テキストを含めずに、画像を生成または編集する。
-2. 採用するビットマップ画像をローカルファイルとして保存または特定する。
-3. `magick -version` で ImageMagick を利用できるか確認する。
-4. ユーザが別の位置を指定していない限り、開示ラベルを右下に追加する。
-5. 可読性を確保できるコントラストにする。背景が複雑な場合は半透明の下地を付ける。
-6. ユーザが明示的に上書きを求めていない限り、元画像を破壊せず別ファイルとして保存する。
-7. 最終的な出力パスを報告する。ラベルを適用できなかった場合は理由を報告する。
+2. この SKILL を実行している現在のモデル名を取得し、`この画像は<実行モデル名>により生成されました` の形式で開示ラベル文字列を組み立てる。
+3. 採用するビットマップ画像をローカルファイルとして保存または特定する。
+4. `magick -version` で ImageMagick を利用できるか確認する。
+5. ユーザが別の位置を指定していない限り、開示ラベルを右下に追加する。
+6. 可読性を確保できるコントラストにする。背景が複雑な場合は半透明の下地を付ける。
+7. ユーザが明示的に上書きを求めていない限り、元画像を破壊せず別ファイルとして保存する。
+8. 最終的な出力パスを報告する。ラベルを適用できなかった場合は理由を報告する。
 
 ## ImageMagick の実行例
 
@@ -34,24 +35,26 @@ description: Add and validate AI-generation disclosure labels for generated or e
 デフォルトでは右下に配置する。実行中の shell に合う例を選ぶ。
 
 ```powershell
+# <実行モデル名> はこの SKILL を実行しているモデル名で置き換える
 magick input.png ^
   -gravity southeast ^
   -font "Yu-Gothic" ^
   -pointsize 24 ^
   -fill white ^
   -undercolor "#00000080" ^
-  -annotate +20+20 "この画像はChatGPTにより生成されました" ^
+  -annotate +20+20 "この画像は<実行モデル名>により生成されました" ^
   output.png
 ```
 
 ```bash
+# <実行モデル名> はこの SKILL を実行しているモデル名で置き換える
 magick input.png \
   -gravity southeast \
   -font "Yu-Gothic" \
   -pointsize 24 \
   -fill white \
   -undercolor "#00000080" \
-  -annotate +20+20 "この画像はChatGPTにより生成されました" \
+  -annotate +20+20 "この画像は<実行モデル名>により生成されました" \
   output.png
 ```
 
