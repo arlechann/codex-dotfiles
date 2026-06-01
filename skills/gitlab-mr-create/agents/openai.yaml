@@ -1,0 +1,4 @@
+interface:
+  display_name: "GitLab MR Create"
+  short_description: "Create GitLab merge requests with glab."
+  default_prompt: "Use $gitlab-mr-create to create a merge request with glab for the current branch."
